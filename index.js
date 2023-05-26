@@ -1,28 +1,31 @@
 const express = require('express');
+const routerApi = require('./routes');
+const {logErrors,errorHandler, boomErrorHandler} = require('./middlewares/errorHandler')
 
-const app = express()
-const cors = require('cors')
-const port = 3000
-app.get('/',(req,res)=>{
-    res.send("Hola mundo que tal?")
+const app = express();
+const port = 3000;
+app.use(express.json())
+app.get('/api',(req,res)=>{
+  res.send("Hola mi server en express")
+
 })
-app.post('/',(req,res)=>{
-    console.log(req.body)
-    res.send('Hola')
-})
-app.use(express.json());       
-app.use(express.urlencoded({extended: true})); 
-whitelist = ['http://www.localhost:80','http://localhost:3000']
-var corsOptions = {
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1 || !origin) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'))
-      }
-    }
-  }
-app.use(cors(corsOptions))
+
 app.listen(port,()=>{
-    console.log('listen on port '+port)
+  console.log(`Escuchando en http://localhost:${port}`)
 })
+routerApi(app)
+app.use(logErrors)
+app.use(boomErrorHandler)
+
+app.use(errorHandler)
+
+//Fin de la segunda clase
+//Segunda clase: Routing
+//¿Que son las api REST(Representational State Transfer)
+//Como hacer un GET
+//convenciones
+//api.expample.com/tasks/{id}/
+//api.expample.com/people/{id}/
+//api.expample.com/users/{id}/tasks/
+
+
