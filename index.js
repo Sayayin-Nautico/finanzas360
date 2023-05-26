@@ -5,6 +5,9 @@ const {logErrors,errorHandler, boomErrorHandler} = require('./middlewares/errorH
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json())
+app.get('/',(req,res)=>{
+  res.redirect('/api')
+})
 app.get('/api',(req,res)=>{
   res.send("Hola mi server en express")
 
